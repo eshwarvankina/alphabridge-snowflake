@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Landing copies of S3 files loaded by COPY INTO. All columns VARCHAR, duplicates possible."
+    database: ALPHABRIDGE
+    schema: RAW
+    tables:
+      - name: prices_daily
+        description: "Daily prices from Yahoo Finance."
+      - name: security_master
+        description: "Security reference data: identifiers, sector, industry."
+      - name: custodian_positions
+        description: "Custodian end-of-day holdings per fund, vendor column names."
