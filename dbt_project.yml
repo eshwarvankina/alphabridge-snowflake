@@ -46,3 +46,6 @@ models:
     mart:
       +schema: mart
       +materialized: table
+seeds:
+  alphabridge:
+    +schema: curated

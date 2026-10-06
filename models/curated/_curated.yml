@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: prices_daily
+    description: "One row per ticker per trading day. Latest source file wins."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [ticker, trade_date]
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "low_price <= high_price"
+    columns:
+      - name: ticker
+        data_tests: [not_null]
+      - name: trade_date
+        data_tests: [not_null]
+      - name: close_price
+        data_tests: [not_null]
+
+  - name: prices_daily_rejects
+    description: "Staging price rows that failed parsing, with the reason and source location."
+  
+  - name: dim_security
+    description: "One row per version of each security (SCD Type 2). Filter is_current for today's view."
+    columns:
+      - name: security_version_id
+        data_tests: [unique, not_null]
+      - name: isin
+        data_tests: [not_null]
+
+  - name: dim_fund
+    description: "One row per fund, combining custodian accounts with internal fund reference data."
+    columns:
+      - name: fund_code
+        data_tests: [unique, not_null]
+      - name: fund_name
+        data_tests: [not_null]
+
+  - name: dim_date
+    description: "Calendar 2023-2027 with trading-day and month-end flags."
+    columns:
+      - name: calendar_date
+        data_tests: [unique, not_null]

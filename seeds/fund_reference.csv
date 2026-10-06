@@ -1,0 +1,4 @@
+fund_code,fund_name,strategy,benchmark
+GROWTH01,AlphaBridge Growth Fund,Large-cap growth,NASDAQ-100
+INCOME01,AlphaBridge Income Fund,Dividend income,S&P 500 High Dividend
+CORE01,AlphaBridge Core Equity Fund,Large-cap blend,S&P 500
