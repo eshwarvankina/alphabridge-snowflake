@@ -12,3 +12,34 @@ sources:
         description: "Security reference data: identifiers, sector, industry."
       - name: custodian_positions
         description: "Custodian end-of-day holdings per fund, vendor column names."
+
+  - name: curated
+    description: "Curated tables built outside dbt, by Snowflake stream + task."
+    database: ALPHABRIDGE
+    schema: CURATED
+    tables:
+      - name: custodian_positions
+        description: "One row per fund, security and position date. Loaded by TSK_LOAD_CUSTODIAN_POSITIONS."
+        data_tests:
+          - dbt_utils.unique_combination_of_columns:
+              arguments:
+                combination_of_columns: [fund_code, isin, position_date]
+        columns:
+          - name: fund_code
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: ref('dim_fund')
+                    field: fund_code
+          - name: isin
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: ref('dim_security')
+                    field: isin
+          - name: position_date
+            data_tests: [not_null]
+          - name: quantity
+            data_tests: [not_null]
